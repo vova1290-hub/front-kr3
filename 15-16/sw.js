@@ -37,12 +37,10 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
     
-    // Пропускаем запросы к другим сайтам (например, CDN)
     if (url.origin !== location.origin) {
         return;
     }
     
-    // Для динамических страниц (content/*) - сначала сеть, потом кэш
     if (url.pathname.startsWith('/content/')) {
         event.respondWith(
             fetch(event.request)
@@ -53,27 +51,55 @@ self.addEventListener('fetch', event => {
                     });
                     return networkRes;
                 })
-                .catch(() => {
-                    return caches.match(event.request)
-                        .then(cached => {
-                            if (cached) return cached;
-                            return caches.match('content/home.html');
-                        });
+                .catch(async () => {
+                    const cached = await caches.match(event.request);
+                    if (cached) return cached;
+                    return caches.match('content/home.html');
                 })
         );
-    } 
-    // Для статических файлов - сначала кэш, потом сеть
-    else {
-        event.respondWith(
-            caches.match(event.request)
-                .then(response => {
-                    if (response) {
-                        return response;
-                    }
-                    return fetch(event.request).catch(() => {
-                        return new Response('Страница не найдена', { status: 404 });
-                    });
-                })
-        );
+        return;
     }
+    
+    event.respondWith(
+        caches.match(event.request)
+            .then(cached => {
+                if (cached) return cached;
+                return fetch(event.request).catch(() => {
+                    return new Response('Страница не найдена', { status: 404 });
+                });
+            })
+    );
+});
+
+// ========== ОБРАБОТЧИК PUSH ==========
+self.addEventListener('push', (event) => {
+    console.log('Push получен:', event);
+    
+    let data = { title: 'Новое уведомление', body: '' };
+    
+    if (event.data) {
+        try {
+            data = event.data.json();
+        } catch (e) {
+            data.body = event.data.text();
+        }
+    }
+    
+    const options = {
+        body: data.body,
+        icon: '/icons/icon-128.png',
+        badge: '/icons/icon-48.png',
+        vibrate: [200, 100, 200]
+    };
+    
+    event.waitUntil(
+        self.registration.showNotification(data.title, options)
+    );
+});
+
+self.addEventListener('notificationclick', (event) => {
+    event.notification.close();
+    event.waitUntil(
+        clients.openWindow('/')
+    );
 });

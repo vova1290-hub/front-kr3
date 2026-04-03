@@ -21,7 +21,7 @@ async function subscribeToPush() {
         const registration = await navigator.serviceWorker.ready;
         const subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: urlBase64ToUint8Array('ВАШ_ПУБЛИЧНЫЙ_VAPID_КЛЮЧ')
+            applicationServerKey: urlBase64ToUint8Array('BFUmH8Eo-dQj35CKWMfV8ZhgtUlh9wvwEqFRXbOwJPPX9sjMro3BNQE4KBRUHViN4XRFhfkFIU19gux-M3t1jjk')
         });
         await fetch('http://localhost:3001/subscribe', {
             method: 'POST',
