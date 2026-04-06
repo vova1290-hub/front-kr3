@@ -8,8 +8,8 @@ const path = require('path');
 
 
 const vapidKeys = {
-    publicKey: 'BFUmH8Eo-dQj35CKWMfV8ZhgtUlh9wvwEqFRXbOwJPPX9sjMro3BNQE4KBRUHViN4XRFhfkFIU19gux-M3t1jjk',
-    privateKey: 'AhtJBgZ1bQcY5x-Pvq49fNQNVnb_3xs_lxR9BBKYxfE'
+    publicKey: 'BFLJqnPiZXHO0pqs6osEwHny26POCbJLEJGJPtYNF_8QrHD2iMhCwJz2omWKrHnD0-mE_3XFMIDIQZlT37X_Ql4',
+    privateKey: '1Sq-0Gm9sSHbbnxJ6D51ZppdPMnUUNoSDiHtzGm5n5Q'
 };
 
 webpush.setVapidDetails(
