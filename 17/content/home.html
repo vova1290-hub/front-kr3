@@ -1,0 +1,17 @@
+<div class="home-content">
+    <h2>Добавить заметку (без напоминания)</h2>
+    <form id="note-form" class="form-row">
+        <input type="text" id="note-input" placeholder="Введите текст заметки" required>
+        <button type="submit">Добавить</button>
+    </form>
+
+    <h2>Добавить заметку с напоминанием</h2>
+    <form id="reminder-form" class="form-row">
+        <input type="text" id="reminder-text" placeholder="Текст напоминания" required>
+        <input type="datetime-local" id="reminder-time" required>
+        <button type="submit" class="btn-reminder">Добавить с напоминанием</button>
+    </form>
+
+    <h2>Список заметок</h2>
+    <ul id="notes-list"></ul>
+</div>
